@@ -29,7 +29,6 @@ def stats(country, beginning_date, ending_date):
     except (ValueError, KeyError) as e:
         return f"Error: Invalid input or missing data. {str(e)}"
 
-
 @app.errorhandler(404)
 def page_not_found():
     """Handle 404 errors with a custom message."""
