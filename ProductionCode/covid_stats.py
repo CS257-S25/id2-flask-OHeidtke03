@@ -2,7 +2,13 @@ import csv
 from datetime import datetime
 
 def stats(countries, beginning_date, ending_date):
-    """Calculate total COVID-19 cases and deaths for given countries within a date range."""
+    """Calculate total COVID-19 cases and deaths for given countries within a date range.
+    args:
+        countries (list): List of country names or codes.
+        beginning_date (str): Start date in YYYY-MM-DD format.
+        ending_date (str): End date in YYYY-MM-DD format.
+    returns:
+        tuple: Total cases and total deaths for the specified countries."""
     beginning = datetime.strptime(beginning_date, "%Y-%m-%d")
     ending = datetime.strptime(ending_date, "%Y-%m-%d")
 
