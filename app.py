@@ -31,9 +31,9 @@ def stats(country, beginning_date, ending_date):
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     """Handle 404 errors with a custom message."""
-    
+
     return (""
     "<h1>Error 404: The requested resource was not found.</h1>"
         "- To get COVID-19 statistics, use this URL format:"
