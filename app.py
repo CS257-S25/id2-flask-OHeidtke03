@@ -30,7 +30,7 @@ def stats(country, beginning_date, ending_date):
         return f"Error: Invalid input or missing data. {str(e)}"
 
 @app.errorhandler(404)
-def page_not_found(error):
+def page_not_found():
     """Handle 404 errors with a custom message."""
     return render_template_string("""
         <h1>Error 404: The requested resource was not found.</h1>
