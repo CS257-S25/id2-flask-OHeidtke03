@@ -9,15 +9,11 @@ app = Flask(__name__)
 def homepage():
     """Show homepage instructions."""
     return (
-        "<h1>Hello, this is the homepage.</h1>"
+        "<h1>Welcome to my ID2 Application!</h1>"
         "- To get COVID-19 statistics, use this URL format:"
         "/stats/<country>/<beginning_date>/<ending_date>"
         "Example:\n"
         "/stats/USA/2020-03-01/2020-03-10<br>"
-        "- please use this format to compare: /compare///"
-        "\nExample:\n"
-        "/compare/2020-04-19/US,GB"
-
     )
 @app.route("/stats/<country>/<beginning_date>/<ending_date>", strict_slashes=False)
 def stats(country, beginning_date, ending_date):
@@ -43,11 +39,7 @@ def page_not_found(e):
         "- To get COVID-19 statistics, use this URL format:"
         "/stats/<country>/<beginning_date>/<ending_date>"
         "Example:\n"
-        "/stats/USA/2020-03-01/2020-03-10<br>"
-        "- please use this format to compare: /compare///"
-        "\nExample:\n"
-        "/compare/2020-04-19/US,GB", 404)
-
+        "/stats/USA/2020-03-01/2020-03-10<br>", 404)
 
 if __name__ == '__main__':
     app.run()
