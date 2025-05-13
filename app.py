@@ -1,47 +1,53 @@
-from flask import Flask, request, jsonify
-from datetime import datetime, timedelta
-from ProductionCode.production import stats
+"""Flask app to show COVID-19 statistics."""
+
+from flask import Flask
+from ProductionCode import covid_stats
 
 app = Flask(__name__)
 
 @app.route('/')
 def homepage():
-    return '''
-    <h2>COVID Comparison App</h2>
-    <p>To compare up to 5 countries during a week, use the following format:</p>
-    <p><code>/compare/2021-05-01?countries=USA,IND,BRA</code></p>
-    <p>The date can be any day in the week you want to analyze.</p>
-    '''
+    """Show homepage instructions."""
+    return (
+        "<h1>Hello, this is the homepage.</h1>"
+        "- To get COVID-19 statistics, use this URL format:"
+        "/stats/<country>/<beginning_date>/<ending_date>"
+        "Example:\n"
+        "/stats/USA/2020-03-01/2020-03-10<br>"
+        "- please use this format to compare: /compare///"
+        "\nExample:\n"
+        "/compare/2020-04-19/US,GB"
 
-@app.route('/compare/<date>', methods=['GET'])
-def compare_route(date):
+    )
+@app.route("/stats/<country>/<beginning_date>/<ending_date>", strict_slashes=False)
+def stats(country, beginning_date, ending_date):
+    """Show COVID-19 stats for a country between two dates."""
     try:
-        base_date = datetime.strptime(date, "%Y-%m-%d")
-    except ValueError:
-        return "Invalid date format. Use YYYY-MM-DD.", 400
-
-    country_list = request.args.get('countries')
-    if not country_list:
-        return "Please provide 2–5 comma-separated countries in the 'countries' query param.", 400
-
-    countries = country_list.split(',')
-    if not (2 <= len(countries) <= 5):
-        return "Please select between 2 and 5 countries.", 400
-
-    # Calculate start and end of the week (Sunday–Saturday)
-    start_of_week = base_date - timedelta(days=base_date.weekday())
-    end_of_week = start_of_week + timedelta(days=6)
-
-    results = {}
-    for country in countries:
-        total_cases, total_deaths = stats(country.strip(), start_of_week.strftime("%Y-%m-%d"), end_of_week.strftime("%Y-%m-%d"))
-        results[country.strip()] = {
-            "total_cases": total_cases,
-            "total_deaths": total_deaths
-        }
-
-    return jsonify(results)
+        # Wrap country string in a list
+        total_cases, total_deaths = covid_stats.stats([country], beginning_date, ending_date)
+        return (
+            f"COVID-19 stats for {country} from {beginning_date} to {ending_date}:<br>"
+            f"Total Cases: {total_cases}<br>"
+            f"Total Deaths: {total_deaths}"
+        )
+    except (ValueError, KeyError) as e:
+        return f"Error: Invalid input or missing data. {str(e)}"
 
 
-if __name__ == "__main__":
+@app.errorhandler(404)
+def page_not_found(e):
+    """Handle 404 errors with a custom message."""
+    
+    return (""
+    "<h1>Error 404: The requested resource was not found.</h1>"
+        "- To get COVID-19 statistics, use this URL format:"
+        "/stats/<country>/<beginning_date>/<ending_date>"
+        "Example:\n"
+        "/stats/USA/2020-03-01/2020-03-10<br>"
+        "- please use this format to compare: /compare///"
+        "\nExample:\n"
+        "/compare/2020-04-19/US,GB", 404)
+
+
+if __name__ == '__main__':
     app.run()
