@@ -27,7 +27,7 @@ class TestFlaskApp(unittest.TestCase):
 
         # Assert that the error message is returned
         self.assertIn(b'Error: Invalid input or missing data.', response.data)
-    """def test_invalid_country(self):
+    '''def test_invalid_country(self):
         """Test an invalid country that triggers a KeyError in the stats route."""
         # Simulate a request for a non-existent country
         response = self.app.get('/stats/NonExistentCountry/2020-01-01/2020-01-08')
@@ -48,6 +48,6 @@ class TestFlaskApp(unittest.TestCase):
         # Assert that the response contains the custom error message
         self.assertIn(b'Error 404: The requested resource was not found.', response.data)
         self.assertIn(b'/stats/', response.data)
-        self.assertIn(b'Example:', response.data)"""
+        self.assertIn(b'Example:', response.data)'''
 if __name__ == '__main__':
     unittest.main()
