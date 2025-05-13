@@ -7,7 +7,7 @@ class TestFlaskApp(unittest.TestCase):
     """Unit tests for the Flask application"""
     def setUp(self):
         """"Set up the test client for the Flask application"""
-        self.app = app.test_client()
+        self.client = app.test_client()
     def test_homepage(self):
         """Test if the homepage loads correctly."""
         response = self.app.get('/')
@@ -18,9 +18,10 @@ class TestFlaskApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'COVID-19 stats for USA', response.data)
     def test_404_error_handler(self):
+        """Test the custom 404 error handler."""
         # Simulate a request to an invalid URL that will trigger the 404 handler
         response = self.client.get('/invalid-url')
-        
+
         # Assert that the status code is 404
         self.assertEqual(response.status_code, 404)
 
