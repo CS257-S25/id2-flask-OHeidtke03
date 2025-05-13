@@ -20,7 +20,7 @@ class TestFlaskApp(unittest.TestCase):
     def test_404_error_handler(self):
         """Test the custom 404 error handler."""
         # Simulate a request to an invalid URL that will trigger the 404 handler
-        response = self.app.get('/invalid-url')  # Use self.app here
+        response = self.app.get('/invalid-url')  # Corrected to use self.app here
 
         # Assert that the status code is 404
         self.assertEqual(response.status_code, 404)
